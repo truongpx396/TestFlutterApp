@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'ui/movie_list.dart';
 import 'package:inject/inject.dart';
 import 'ui/movie_detail.dart';
+import 'ui/login.dart';
 import 'models/item_model.dart';
 import 'blocs/movies_bloc.dart';
 import 'blocs/movie_detail_bloc.dart';
@@ -34,8 +35,11 @@ class App extends StatelessWidget {
           });
         }
       },
-      routes: {
-        '/': (context) => MovieList(moviesBloc),
+      // routes: {
+      //   '/': (context) => MovieList(moviesBloc),
+      // },
+       routes: {
+        '/': (context) => MyHomePage(title: 'DemoAuth0'),
       },
     );
   }
