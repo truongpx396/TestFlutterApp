@@ -1,0 +1,8 @@
+{
+  "asset": "asset:my_movies/lib/src/blocs/movie_detail_bloc_provider.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "asset": "asset:my_movies/lib/src/di/bloc_module.dart",
+  "summary": {
+    "injector": [],
+    "module": [
+      {
+        "name": "BlocModule",
+        "providers": [
+          {
+            "name": "client",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:http/lib/src/client.dart#Client",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": true,
+            "asynchronous": false,
+            "dependencies": []
+          },
+          {
+            "name": "movieApiProvider",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/resources/movie_api_provider.dart#MovieApiProvider",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": true,
+            "asynchronous": false,
+            "dependencies": [
+              {
+                "lookupKey": {
+                  "root": "asset:http/lib/src/client.dart#Client",
+                  "qualifier": null
+                },
+                "isProvider": false
+              }
+            ]
+          },
+          {
+            "name": "repository",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/resources/repository.dart#Repository",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": true,
+            "asynchronous": false,
+            "dependencies": [
+              {
+                "lookupKey": {
+                  "root": "asset:my_movies/lib/src/resources/movie_api_provider.dart#MovieApiProvider",
+                  "qualifier": null
+                },
+                "isProvider": false
+              }
+            ]
+          },
+          {
+            "name": "movieBloc",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/blocs/bloc_base.dart#BlocBase",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": [
+              {
+                "lookupKey": {
+                  "root": "asset:my_movies/lib/src/resources/repository.dart#Repository",
+                  "qualifier": null
+                },
+                "isProvider": false
+              }
+            ]
+          },
+          {
+            "name": "movieDetailBloc",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/blocs/bloc_base.dart#BlocBase",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": [
+              {
+                "lookupKey": {
+                  "root": "asset:my_movies/lib/src/resources/repository.dart#Repository",
+                  "qualifier": null
+                },
+                "isProvider": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "injectable": []
+  }
+}

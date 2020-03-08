@@ -1,0 +1,31 @@
+{
+  "asset": "asset:my_movies/lib/src/di/bloc_injector.dart",
+  "summary": {
+    "injector": [
+      {
+        "name": "BlocInjector",
+        "providers": [
+          {
+            "name": "app",
+            "kind": "getter",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/app.dart#App",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": []
+          }
+        ],
+        "modules": [
+          "asset:my_movies/lib/src/di/bloc_module.dart#BlocModule"
+        ]
+      }
+    ],
+    "module": [],
+    "injectable": []
+  }
+}
