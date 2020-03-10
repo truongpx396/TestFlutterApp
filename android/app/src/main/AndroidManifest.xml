@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.techshare">
+    package="com.mantu.techshareapp">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="dev-cp8t6cr2.auth0.com"
+                    android:host="truongpx.auth0.com"
                     android:pathPrefix="/android/${applicationId}/callback"
                     android:scheme="${applicationId}" />
             </intent-filter>

@@ -37,6 +37,7 @@ class _PKCEPageState extends State<PKCEPage> {
       showInfo('Web Login', '''
       \ntoken_type: ${response['token_type']}
       \nexpires_in: ${DateTime.fromMillisecondsSinceEpoch(response['expires_in'] + now.millisecondsSinceEpoch)}
+      \nindentityToken: ${response['id_token']}
       \nrefreshToken: ${response['refresh_token']}
       \naccess_token: ${response['access_token']}
       ''');

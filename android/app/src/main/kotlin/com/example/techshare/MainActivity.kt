@@ -1,4 +1,4 @@
-package com.example.techshare
+package com.mantu.techshareapp
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
