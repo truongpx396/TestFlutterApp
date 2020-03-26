@@ -55,6 +55,7 @@ class Result {
     for (int i = 0; i < result['genre_ids'].length; i++) {
       _genre_ids.add(result['genre_ids'][i]);
     }
+
     _backdrop_path = result['backdrop_path'];
     _adult = result['adult'];
     _overview = result['overview'];

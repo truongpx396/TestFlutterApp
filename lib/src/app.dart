@@ -25,22 +25,17 @@ class App extends StatelessWidget {
           return MaterialPageRoute(builder: (context) {
             return MovieDetail(
               movieDetailBloc,
-              result.title,
-              result.backdrop_path,
-              result.overview,
-              result.release_date,
-              result.vote_average.toString(),
-              result.id,
+              result,
             );
           });
         }
       },
-      // routes: {
-      //   '/': (context) => MovieList(moviesBloc),
-      // },
-       routes: {
-        '/': (context) => MyHomePage(title: 'DemoAuth0'),
+      routes: {
+        '/': (context) => MovieList(moviesBloc),
       },
+      //  routes: {
+      //   '/': (context) => MyHomePage(title: 'DemoAuth0'),
+      // },
     );
   }
 }

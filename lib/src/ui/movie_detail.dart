@@ -3,61 +3,47 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../blocs/movie_detail_bloc.dart';
 import '../models/trailer_model.dart';
+import '../models/item_model.dart';
 
 class MovieDetail extends StatefulWidget {
   final MovieDetailBloc bloc;
-  final String posterUrl;
-  final String description;
-  final String releaseDate;
-  final String title;
-  final String voteAverage;
-  final int movieId;
+
+  final Result movieData;
 
   MovieDetail(
     this.bloc,
-    this.title,
-    this.posterUrl,
-    this.description,
-    this.releaseDate,
-    this.voteAverage,
-    this.movieId,
+    this.movieData,
   );
 
   @override
   State<StatefulWidget> createState() {
-    return MovieDetailState(
-      title: title,
-      posterUrl: posterUrl,
-      description: description,
-      releaseDate: releaseDate,
-      voteAverage: voteAverage,
-      movieId: movieId,
-    );
+    return MovieDetailState();
   }
 }
 
 class MovieDetailState extends State<MovieDetail> {
-  final String posterUrl;
-  final String description;
-  final String releaseDate;
-  final String title;
-  final String voteAverage;
-  final int movieId;
+  String posterUrl;
+  String description;
+  String releaseDate;
+  String title;
+  String voteAverage;
+  int movieId;
 
-  MovieDetailState({
-    this.title,
-    this.posterUrl,
-    this.description,
-    this.releaseDate,
-    this.voteAverage,
-    this.movieId,
-  });
+  Result movieData;
 
   @override
   void initState() {
     super.initState();
+
+    movieData = widget.movieData;
+    posterUrl = movieData.poster_path;
+    description = movieData.overview;
+    releaseDate = movieData.release_date;
+    title = movieData.title;
+    voteAverage = movieData.vote_average;
+
     widget.bloc.init();
-    widget.bloc.fetchTrailersById(movieId);
+    widget.bloc.fetchTrailersById(movieData.id);
   }
 
   @override
