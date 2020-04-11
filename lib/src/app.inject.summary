@@ -32,6 +32,13 @@
                 "qualifier": null
               },
               "isProvider": false
+            },
+            {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/blocs/articles_bloc.dart#ArticlesBloc",
+                "qualifier": null
+              },
+              "isProvider": false
             }
           ]
         }

@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
 
+        <!-- android:host="truongpx.auth0.com" -->
         <activity 
             android:name="io.flutter.plugins.flutterauth0.AuthenticationReceiver">
             <intent-filter>
@@ -31,7 +32,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="truongpx.auth0.com"
+                    android:host="auth.mantu.com"
                     android:pathPrefix="/android/${applicationId}/callback"
                     android:scheme="${applicationId}" />
             </intent-filter>

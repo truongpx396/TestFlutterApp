@@ -3,11 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/item_model.dart';
 import '../blocs/movies_bloc.dart';
+import '../blocs/articles_bloc.dart';
+import 'package:swagger/api.dart';
 
 class BlogScreen extends StatefulWidget {
   final MoviesBloc _bloc;
 
-  BlogScreen(this._bloc);
+  final ArticlesBloc _articlesBloc;
+
+  BlogScreen(this._bloc, this._articlesBloc);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,12 +27,22 @@ class BlogScreenState extends State<BlogScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
+  var items;
+
+  List<ReadPost> cachedArticleList;
+
   @override
   void initState() {
     super.initState();
     widget._bloc.init();
     widget._bloc.fetchAllMovies();
+
+    widget._articlesBloc.init();
+    widget._articlesBloc.fetchAllArticles();
+
     controller = ScrollController()..addListener(_scrollListener);
+
+    items = List<String>.generate(10000, (i) => "Item $i");
 
     // WidgetsBinding.instance
     //     .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
@@ -36,29 +50,34 @@ class BlogScreenState extends State<BlogScreen> {
 
   @override
   void dispose() {
+    widget._articlesBloc.dispose();
     widget._bloc.dispose();
     super.dispose();
   }
 
   void _scrollListener() {
     print(controller.position.extentAfter);
-    if (controller.position.extentAfter < 500) {
-      setState(() {
-        //items.addAll(new List.generate(42, (index) => 'Inserted $index'));
-        reachBottom = true;
-        widget._bloc.fetchMoreMovies();
-      });
-    } else {
-      setState(() {
-        reachBottom = false;
-      });
-    }
+    // if (controller.position.extentAfter < 500) {
+    //   setState(() {
+    //     //items.addAll(new List.generate(42, (index) => 'Inserted $index'));
+    //     reachBottom = true;
+    //     widget._bloc.fetchMoreMovies();
+    //   });
+    // } else {
+    //   setState(() {
+    //     reachBottom = false;
+    //   });
+    // }
   }
 
   Future<bool> _refresh() {
     return Future.delayed(
       Duration(seconds: 1),
-      () => true,
+      () {
+        widget._bloc.fetchAllMovies();
+        widget._articlesBloc.fetchAllArticles();
+        return true;
+      },
     );
   }
 
@@ -73,7 +92,7 @@ class BlogScreenState extends State<BlogScreen> {
             backgroundColor: Color(0xFF5CA0D3),
             expandedHeight: 200,
             actions: <Widget>[
-              new IconButton(
+              IconButton(
                   icon: const Icon(Icons.refresh),
                   tooltip: 'Refresh',
                   onPressed: () {
@@ -91,36 +110,27 @@ class BlogScreenState extends State<BlogScreen> {
             delegate: SliverChildListDelegate(
               [
                 Text(
-                  'Headline',
+                  'Recent',
                   style: TextStyle(fontSize: 18),
                 ),
-                SizedBox(
-                  height: 200.0,
-                  child: ListView.builder(
-                    physics: ClampingScrollPhysics(),
-                    shrinkWrap: false,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 15,
-                    itemBuilder: (BuildContext context, int index) => Card(
-                      child: Center(child: Text('Dummy Card Text')),
-                    ),
-                  ),
-                ),
-                Text(
-                  'Demo Headline 2',
-                  style: TextStyle(fontSize: 18),
-                ),
-                _listItem(),
                 StreamBuilder(
-                  stream: widget._bloc.allMovies2,
-                  builder: (context, AsyncSnapshot<List<Result>> snapshot) {
+                  stream: widget._articlesBloc.allArticles,
+                  builder: (context, AsyncSnapshot<List<ReadPost>> snapshot) {
+                    if (cachedArticleList != null) {
+                      return buildArticleList(cachedArticleList);
+                    }
                     if (snapshot.hasData) {
-                      return buildList(snapshot);
+                      cachedArticleList = snapshot.data;
+                      return buildArticleList(snapshot.data);
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString());
                     }
                     return Center(child: CircularProgressIndicator());
                   },
+                ),
+                Text(
+                  'This month',
+                  style: TextStyle(fontSize: 18),
                 ),
                 loadMoreItem()
               ],
@@ -128,6 +138,7 @@ class BlogScreenState extends State<BlogScreen> {
           ),
         ]));
     return Scaffold(
+        backgroundColor: Color(0xFFEFEFEF),
         body: SafeArea(top: false, bottom: false, child: nestedScrollView));
   }
 
@@ -139,110 +150,110 @@ class BlogScreenState extends State<BlogScreen> {
         : Container();
   }
 
-  _listItem() {
-    return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 5),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: ListView(
+  Widget buildArticleList(List<ReadPost> data) {
+    return SizedBox(
+      height: 300.0,
+      child: ListView.builder(
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: false,
         scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          MovieCard(),
-
-          MovieCard(),
-
-          MovieCard()
-
-          ///add more as you wish
-        ],
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) => Card(
+          margin: EdgeInsets.only(right: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: buildArticleItem(data[index]),
+        ),
       ),
     );
   }
 
-  Widget buildList(AsyncSnapshot<List<Result>> snapshot) {
-    return GridView.builder(
-        shrinkWrap: true,
-        primary: false,
-        itemCount: snapshot.data.length,
-        gridDelegate:
-            new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemBuilder: (BuildContext context, int index) {
-          return (index == snapshot.data.length)
-              ? Container(
-                  color: Colors.greenAccent,
-                  child: FlatButton(child: Text("Load More"), onPressed: () {}))
-              : GridTile(
-                  child: InkResponse(
-                    enableFeedback: true,
-                    child: Image.network(
-                      'https://image.tmdb.org/t/p/w185${snapshot.data[index].poster_path}',
-                      fit: BoxFit.cover,
-                    ),
-                    // onTap: () => openDetailPage(snapshot.data, index),
+  Widget buildArticleItem(ReadPost data) {
+    return GestureDetector(
+      onTap: () {
+        openDetailPage(data, 0);
+      },
+      child: Container(
+          padding: EdgeInsets.zero,
+          width: 220,
+          height: 300,
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: buildAvatar(
+                            'https://blockinsightshome.files.wordpress.com/2019/10/img14.jpg'),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(data.createdByLogin),
+                          Row(
+                            children: <Widget>[
+                              Text('9 mins read'),
+                              Text(data.createdDateString),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                );
-        });
-  }
-
-  openDetailPage(ItemModel data, int index) {
-    Navigator.pushNamed(context, 'movieDetail', arguments: data.results[index]);
-  }
-}
-
-class MovieCard extends StatelessWidget {
-  String path = "images/svgs/yts_logo.svg";
-
-  int ratings = 2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 3),
-      width: 200,
-      height: 300,
-      child: Column(
-        children: <Widget>[
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 12,
-            child: Container(
-              width: 100,
-              height: 100,
-              color: Colors.blue,
-            ),
-          ),
-          //title
-          SizedBox(
-            height: 5,
-          ),
-          Text("title",
-              style: TextStyle(
-                  fontFamily: 'open_sans',
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal)),
-          IconTheme(
-            data: IconThemeData(
-              color: Colors.amber,
-              size: 20,
-            ),
-            child: _provideRatingBar(3),
-          )
-          //ratings
-        ],
-      ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          data.title,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontFamily: 'Futura',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: const Radius.circular(10.0),
+                    bottomRight: const Radius.circular(10.0),
+                  ),
+                  child: Image.network(
+                    'https://blockinsightshome.files.wordpress.com/2019/10/img14.jpg',
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ])),
     );
   }
 
-  _provideRatingBar(int rating) {
-    return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(5, (index) {
-          return Icon(
-            index < rating ? Icons.star : Icons.star_border,
-          );
-        }));
+  Widget buildAvatar(String imgUrl) {
+    return Container(
+        width: 40.0,
+        height: 40.0,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+                fit: BoxFit.fill, image: new NetworkImage(imgUrl))));
+  }
+
+  openDetailPage(ReadPost data, int index) {
+    //Navigator.pushNamed(context, 'movieDetail', arguments: data.results[index]);
+    Navigator.pushNamed(context, 'articleDetail', arguments: data);
   }
 }

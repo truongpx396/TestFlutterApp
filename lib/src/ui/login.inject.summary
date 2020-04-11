@@ -1,0 +1,8 @@
+{
+  "asset": "asset:my_movies/lib/src/ui/login.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

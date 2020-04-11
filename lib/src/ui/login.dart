@@ -7,12 +7,14 @@ import 'standard.dart';
 import 'package:swagger/api.dart' as swagger;
 
 //final String clientId = 'wlKGYgwdjixzM5DZmz14alnp3HCXJvQZ';
-//final String clientId = 'Dsufvww4WRF9XOU4PNvAdjsppNDhvBfL';
-final String clientId = '0p9kkzDmQ6KP87Gzx7JAJSz19N0II0Lq';
+final String clientId = 'Dsufvww4WRF9XOU4PNvAdjsppNDhvBfL';
+//final String clientId = '0p9kkzDmQ6KP87Gzx7JAJSz19N0II0Lq';
 
 //final String domain = 'dev-cp8t6cr2.auth0.com';
-//final String domain = 'auth.mantu.com';
-final String domain = 'truongpx.auth0.com';
+final String domain = 'auth.mantu.com';
+//final String domain = 'truongpx.auth0.com';
+
+//from datahost manifest: truongpx.auth0.com
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -37,17 +39,7 @@ class _MyHomePageState extends State<MyHomePage>
 
     // swagger..Configuration.accessToken = 'YOUR_ACCESS_TOKEN';
 
-    testFunc();
-  }
-
-  void testFunc() async {
-    var api_instance = new swagger.PostsApi();
-    try {
-      var result = await api_instance.postsGet();
-      print(result);
-    } catch (e) {
-      print("Exception when calling PostsApi->postsGet: $e\n");
-    }
+    //testFunc();
   }
 
   void showInfo(String text, String message) {

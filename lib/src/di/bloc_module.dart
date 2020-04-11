@@ -5,6 +5,9 @@ import '../blocs/bloc_base.dart';
 import '../resources/repository.dart';
 import '../resources/movie_api_provider.dart';
 import 'package:http/http.dart' show Client;
+import 'package:swagger/api.dart';
+import '../my_shared_preferences.dart';
+import '../blocs/articles_bloc.dart';
 
 @module
 class BlocModule {
@@ -18,8 +21,15 @@ class BlocModule {
 
   @provide
   @singleton
-  Repository repository(MovieApiProvider movieApiProvider) =>
-      Repository(movieApiProvider);
+  PostsApi articleApiProvider() {
+    return PostsApi();
+  }
+
+  @provide
+  @singleton
+  Repository repository(
+          MovieApiProvider movieApiProvider, PostsApi articlesApi) =>
+      Repository(movieApiProvider, articlesApi);
 
   @provide
   BlocBase movieBloc(Repository repository) => MoviesBloc(repository);
@@ -27,4 +37,7 @@ class BlocModule {
   @provide
   BlocBase movieDetailBloc(Repository repository) =>
       MovieDetailBloc(repository);
+
+  @provide
+  BlocBase articleBloc(Repository repository) => ArticlesBloc(repository);
 }

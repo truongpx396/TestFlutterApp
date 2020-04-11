@@ -43,6 +43,20 @@
             ]
           },
           {
+            "name": "articleApiProvider",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:swagger/lib/api.dart#PostsApi",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": true,
+            "asynchronous": false,
+            "dependencies": []
+          },
+          {
             "name": "repository",
             "kind": "method",
             "injectedType": {
@@ -58,6 +72,13 @@
               {
                 "lookupKey": {
                   "root": "asset:my_movies/lib/src/resources/movie_api_provider.dart#MovieApiProvider",
+                  "qualifier": null
+                },
+                "isProvider": false
+              },
+              {
+                "lookupKey": {
+                  "root": "asset:swagger/lib/api.dart#PostsApi",
                   "qualifier": null
                 },
                 "isProvider": false
@@ -88,6 +109,28 @@
           },
           {
             "name": "movieDetailBloc",
+            "kind": "method",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:my_movies/lib/src/blocs/bloc_base.dart#BlocBase",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": [
+              {
+                "lookupKey": {
+                  "root": "asset:my_movies/lib/src/resources/repository.dart#Repository",
+                  "qualifier": null
+                },
+                "isProvider": false
+              }
+            ]
+          },
+          {
+            "name": "articleBloc",
             "kind": "method",
             "injectedType": {
               "lookupKey": {

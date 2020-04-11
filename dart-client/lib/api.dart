@@ -29,5 +29,6 @@ part 'model/update_comment.dart';
 part 'model/update_comment_reaction.dart';
 part 'model/update_post.dart';
 part 'model/update_post_reaction.dart';
+part 'configuration.dart';
 
 ApiClient defaultApiClient = new ApiClient();

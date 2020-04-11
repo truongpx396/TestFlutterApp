@@ -25,6 +25,13 @@
                 "qualifier": null
               },
               "isProvider": false
+            },
+            {
+              "lookupKey": {
+                "root": "asset:swagger/lib/api.dart#PostsApi",
+                "qualifier": null
+              },
+              "isProvider": false
             }
           ]
         }
